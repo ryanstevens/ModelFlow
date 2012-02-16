@@ -1,4 +1,4 @@
-var test = require('testling');
+var test = require('testling');  //require('tap').test;
 var ModelFlow = require('../ModelFlow');
 
 
@@ -335,7 +335,7 @@ test("setState will set model properties", function(t) {
 
     flow.setState('init');
     t.equal(flow.get('foo'), 'bar');
-    t.equal(flow.get('hello'), null);
+    t.equal(flow.get('hello'), undefined);
 
     flow.setState('next');
     t.equal(flow.get('foo'), 'boo');
@@ -360,12 +360,12 @@ test("setState will set model properties with contraints", function(t) {
     //try to set it to next, ensure thing has changed
     flow.setState('next');
     t.equal(flow.get('foo'), 'test');
-    t.equal(flow.get('hello'), null);
+    t.equal(flow.get('hello'), undefined);
 
     //ok, now set it to init
     flow.setState('init');
     t.equal(flow.get('foo'), 'bar');
-    t.equal(flow.get('hello'), null);
+    t.equal(flow.get('hello'), undefined);
 
     flow.setState('next');
     t.equal(flow.get('foo'), 'boo');

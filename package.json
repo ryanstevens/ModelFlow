@@ -1,21 +1,29 @@
 {
   "author": "Ryan Stevens",
-  "name": "model-flow",
-  "version": "0.0.0",
-  "repository": {
-    "url": ""
+  "name": "modelflow",
+  "description" : "A simple event oriented state machine.",
+  "repository" : {
+      "type" : "git",
+      "url" : "git://github.com/ryanstevens/ModelFlow.git"
   },
+  "keywords" :[
+    "state machine",
+    "backbone",
+    "javascript"
+  ],
+  "version": "0.0.1",
   "engines": {
-    "node": "~0.6.2"
+    "node": ">=0.4.0"
   },
   "scripts" : {
     "test":"testling test/test.js"
   },
   "main" : "index.js",
   "dependencies": {
-   "backbone" : "0.5.3",
+   "backbone" : ">=0.5.3",
    "underscore" : ">=1.1.2"
   },
+  "license" : "MIT",
   "devDependencies": {
     "tap" : "0.1.0",
     "testling" : ">=0.0.1"
