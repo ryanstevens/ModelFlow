@@ -1,4 +1,4 @@
-ModelFlow
+ModelFlow->
 =======
 
 ModelFlow is a JavaScript evented state machine written to run both in node.js and the browser. 
@@ -9,9 +9,9 @@ ModelFlow is a JavaScript evented state machine written to run both in node.js a
 - Ability to listen for state changes and run callbacks. 
 - Provide a mechanism to optionally enforce linear paths from state to state.  This may be used an alternative to flow control libraries.  
 
-Installation / Instantiation
+Installation / Basic Usage
 =======
-ModelFlow depends on [Underscore](https://github.com/documentcloud/underscore) and built as a complement to  [Backbone](https://github.com/documentcloud/backbone).  
+ModelFlow depends on [Underscore](https://github.com/documentcloud/underscore) and is built as a complement to  [Backbone](https://github.com/documentcloud/backbone).  
 
 ### On the Server
 
@@ -33,24 +33,50 @@ var CustomFlow = ModelFlow.StateModel.extend({
     }
 });
 
+var flow = new CustomFlow();
+
 ```
 
 ### On the Client
 
+Just like server, however ModelFlow will be pushed on the window as a global.
+
+
 ``` html
 <script type="text/javascript" src="underscore.js"></script>
-
 <script type="text/javascript" src="backbone.js"></script>
-
 <script type="text/javascript" src="ModelFlow.js"></script>
 
 <script type="text/javascript">
-var CustomFlow = ModelFlow.StateModel.extend({
-    states : {
-        state1 : { foo : 1 },
-        staet2 : { foo : 2 }
-    }
-});
+	var CustomFlow = ModelFlow.StateModel.extend({
+	    states : {
+	        state1 : { foo : 1 },
+	        staet2 : { foo : 2 }
+	    }
+	});
+
+	var flow = new CustomFlow();
 </script>
 
+```
+
+
+Moar Usage
+=======
+
+###Bind Callbacks On State Change
+``` js
+	var CustomFlow = ModelFlow.StateModel.extend({
+	    states : {
+	        init : { foo : 1 }
+	    }
+	});
+
+	var flow = new CustomFlow();
+	flow.bind('state:->init', function() {
+		console.log('inited');
+	});
+
+	flow.set({ foo : 0 });  //this does nothing
+	flow.set({ foo : 1 });  //'inited' is logged to console
 ```
