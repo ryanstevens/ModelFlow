@@ -64,7 +64,7 @@ Just like server, however ModelFlow will be pushed on the window as a global.
 Moar Usage
 =======
 
-###Bind Callbacks On State Change
+###Bind callbacks on state changes
 ``` js
 	var CustomFlow = ModelFlow.StateModel.extend({
 	    states : {
@@ -74,9 +74,70 @@ Moar Usage
 
 	var flow = new CustomFlow();
 	flow.bind('state:->init', function() {
-		console.log('inited');
+		console.log('init entered');
+	});
+
+	flow.bind('state:init->', function() {
+		console.log('init exited');
 	});
 
 	flow.set({ foo : 0 });  //this does nothing
-	flow.set({ foo : 1 });  //'inited' is logged to console
+	flow.set({ foo : 1 });  //logs 'init entered' 
+	flow.set({ foo : 2 });  //logs 'init exited'
+```
+
+
+###Define multiple, complex states
+``` js
+	var CustomFlow = ModelFlow.StateModel.extend({
+	    states : {
+	        state1 : { 
+	        	foo : 1,
+	        	bar : "testing"
+	        },
+	        state2 : { 
+	        	foo : 1,
+	        	bar : "hello"
+	        },
+	        state3 : {
+	        	foo : 1,
+	        	bar : "testing",
+	        	cat : "meow"
+	        }
+	    }
+	});
+
+	var flow = new CustomFlow({
+		foo : 1,
+	    bar : "testing"
+	});
+
+	flow.bind('state:state1->', function() {
+		console.log('state1 exited');
+	});
+
+	flow.bind('state:->state2', function() {
+		console.log('state2 entered');
+	});
+
+	flow.bind('state:->state3', function() {
+		console.log('state3 entered');
+	});
+
+	console.log(flow.inState('state1')); //logs true
+	console.log(flow.inState('state2')); //logs false
+	console.log(flow.inState('state3')); //logs false
+
+	flow.set({ cat : 'meow' }); //logs 'state3 entered'
+
+	console.log(flow.inState('state1')); //logs true
+	console.log(flow.inState('state2')); //logs false
+	console.log(flow.inState('state3')); //logs true
+
+	flow.set({ bar : 'hello' }); //logs 'state 1 exited' and 'state2 entered'
+
+	console.log(flow.inState('state1')); //logs false
+	console.log(flow.inState('state2')); //logs true
+	console.log(flow.inState('state3')); //logs false
+
 ```
