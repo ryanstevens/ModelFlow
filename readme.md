@@ -107,6 +107,9 @@ Moar Usage
 	    }
 	});
 
+	//since this is a Backbone Model, 
+	//we can pass the inital JSON data into 
+	//the constructor, which will also set the state to state1
 	var flow = new CustomFlow({
 		foo : 1,
 	    bar : "testing"
@@ -115,11 +118,9 @@ Moar Usage
 	flow.bind('state:state1->', function() {
 		console.log('state1 exited');
 	});
-
 	flow.bind('state:->state2', function() {
 		console.log('state2 entered');
 	});
-
 	flow.bind('state:->state3', function() {
 		console.log('state3 entered');
 	});
@@ -140,4 +141,35 @@ Moar Usage
 	console.log(flow.inState('state2')); //logs true
 	console.log(flow.inState('state3')); //logs false
 
+```
+
+
+###Define constraints between state changes
+``` js
+
+	var CustomFlow = ModelFlow.StateModel.extend({
+	    states : {
+	        first :  { foo : 1 },
+	        second : { foo : 2 }
+	    },
+	    constrints : [ 'first->second' ]
+	});
+
+	var flow = new CustomFlow({ foo : 0});
+	flow.bind('first->second', function() {
+		console.log('flowing from first to second');
+	});	
+
+	flow.set('foo', 2);
+	console.log(flow.inState('first'));  // logs false
+	console.log(flow.inState('second')); // logs false , can't get to second without coming from first
+
+	flow.set('foo', 1);
+	console.log(flow.inState('first'));  // logs true
+	console.log(flow.inState('second')); // logs false 
+
+
+	flow.set('foo', 2);                  // logs 'flowing from first to second'
+	console.log(flow.inState('first'));  // logs false
+	console.log(flow.inState('second')); // logs true
 ```
